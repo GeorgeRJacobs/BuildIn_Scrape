@@ -9,3 +9,16 @@
       to grab the data we need. 
     + Third, we may need to step into those websites to gather the right contact information. 
 2. 
+
+### Details: 
+1. There are 3 things we need to manage.
+    + The Search Page
+        + Scrape the URL from the Search Page. 
+    + The Company Page
+        + Scrape: 
+            + Company Name
+            + Size 
+            + Company Website
+            + Location Data
+    + Company Site Data
+       + Potentially, we can grab the contact information from this website. 

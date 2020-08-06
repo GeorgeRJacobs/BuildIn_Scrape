@@ -25,6 +25,7 @@ job_links = [x.replace('/jobs', '') for x in job_links]
 
 ## Playing w/ page source
 company = requests.get('https://www.builtinchicago.org/company/marketing-store')
+url = company.url
 company = BeautifulSoup(company.text, 'html.parser')
 company_data = company.find_all('script')
 for val in company_data:

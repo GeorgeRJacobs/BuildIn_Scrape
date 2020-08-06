@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import urllib
 import re
 import json
+import time
+import csv
 
 
 class Crawl:
@@ -49,6 +51,8 @@ class Crawl:
 
             # Run Data Fetch
             for org in job_links:
+                # To be nice
+                time.sleep(2)
                 self.scrape_company_page(org)
         else:
             pass
@@ -60,6 +64,7 @@ class Crawl:
         :return:
         """
         company = requests.get(organization)
+        url = company.url
         company = BeautifulSoup(company.text, 'html.parser')
         # Find All script sections containing JSON
         company_data = company.find_all('script')
@@ -68,19 +73,25 @@ class Crawl:
             if '@context' in val.string:
                 data_we_want = val.string
         # Create Dictionary Value
-        data = json.loads(data_we_want)
-        data = {
-            'Company': [data[0]['name']],
-            'Number of Employees': [data[0]['numberOfEmployees']['name']],
-            'Company URL': [data[0]['url']],
-            "Physical Address": [data[0]['address']["streetAddress"]],
-            'City': [data[0]['address']["addressLocality"]],
-            'State': [data[0]['address']['addressRegion']],
-            'ZIP': [data[0]['address']['postalCode']]
-        }
+        try:
+            data = json.loads(data_we_want)
+            data = {
+                'Company': [data[0]['name']],
+                'Number of Employees': [data[0]['numberOfEmployees']['name']],
+                'Company URL': [data[0]['url']],
+                'BuiltIn URL': url,
+                "Physical Address": [data[0]['address']["streetAddress"]],
+                'City': [data[0]['address']["addressLocality"]],
+                'State': [data[0]['address']['addressRegion']],
+                'ZIP': [data[0]['address']['postalCode']]
+            }
 
-
-
+            # Write File to CSV
+            with open('scraped_data/company_info.csv', 'a+', newline='') as f:
+                write = csv.writer(f)
+                write.writerows(data)
+        except:
+            print('Context not found at ' + url)
 
 
 if __name__ == "__main__":

@@ -22,3 +22,5 @@
             + Location Data
     + Company Site Data
        + Potentially, we can grab the contact information from this website. 
+2. We will need to develop 2 schemes to scrape the data we want. It appears for a subset of the companies
+   there is not a context available. Instead, we will need to scrape the data from the JS in the page. 

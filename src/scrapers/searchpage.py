@@ -103,6 +103,9 @@ class Crawl:
                 ('page', self.current_page),
             )
             page = requests.get('https://www.builtinchicago.org/companies', headers=headers, params=params)
+            # Check if page doesn't exist
+            if page.status_code >= 400:
+                return
             soup = BeautifulSoup(page.content, 'html.parser')
             job_hrefs = soup.find_all("div", {"class": "open-jobs"})
             job_links = []

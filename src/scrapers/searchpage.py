@@ -164,6 +164,13 @@ class Crawl:
                 pd.DataFrame({'url': [url]}).to_csv(self.save_missed, mode='a', header=False,
                                                     index=False)
 
+    def crawl(self):
+        for page in range(self.max_page):
+            self.current_page = page
+            self.scrape_results_page()
+            print(f'Page: {page} Complete')
+            
+
 
 if __name__ == "__main__":
     os.system('rm scraped_data/*.csv')

@@ -107,7 +107,7 @@ class Crawl:
             if page.status_code >= 400:
                 return
             soup = BeautifulSoup(page.content, 'html.parser')
-            job_hrefs = soup.find_all("div", {"class": "open-jobs"})
+            job_hrefs = soup.find_all("div", {"class": "wrap-view-page"})
             job_links = []
             for job in job_hrefs:
                 job_links.append(self.base_url.netloc + job.find('a')['href'])
@@ -177,8 +177,9 @@ class Crawl:
 
 
 if __name__ == "__main__":
-    os.system('rm scraped_data/*.csv')
-    c = Crawl('https://www.builtinchicago.org/companies?status=all')
+    #os.system('rm scraped_data/*.csv')
+    c = Crawl('https://www.builtinchicago.org/companies?status=all', 40)
+    c.current_page = 28
     c.scrape_results_page()
     # c.scrape_company_page('https://www.builtinchicago.org/company/marketing-store')
     # df = pd.read_csv('scraped_data/company_info.csv')

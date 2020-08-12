@@ -7,13 +7,14 @@ import pandas as pd
 
 # Let's request the first page
 page1 = requests.get('https://www.builtinchicago.org/companies?status=all')
+page29 = requests.get('https://www.builtinchicago.org/companies?status=all&page=29')
 urllib.parse.urlparse(page1.url)
 # Page 1
 soup = BeautifulSoup(page1.content, 'html.parser')
 
 # We need to find:
 # class = 'open-jobs'
-job_hrefs = soup.find_all("div", {"class": "open-jobs"})
+job_hrefs = soup.find_all("div", {"class": "wrap-view-page"})
 job_links = []
 base_url = urllib.parse.urlparse(page1.url)
 base_url.netloc

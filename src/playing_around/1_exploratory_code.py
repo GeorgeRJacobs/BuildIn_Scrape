@@ -29,6 +29,8 @@ url = company.url
 company = BeautifulSoup(company.text, 'html.parser')
 company_data = company.find_all('script')
 for val in company_data:
+    if val.string is None:
+        continue
     if 'context' in val.string:
         data_we_want = val.string
         print(val.string)

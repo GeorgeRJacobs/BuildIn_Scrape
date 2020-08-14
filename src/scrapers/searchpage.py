@@ -102,7 +102,10 @@ class Crawl:
                 ('status', 'all'),
                 ('page', self.current_page),
             )
-            page = requests.get('https://www.builtinchicago.org/companies', headers=headers, params=params)
+            try:
+                page = requests.get('https://www.builtinchicago.org/companies', headers=headers, params=params, timeout=5)
+            except:
+                return
             # Check if page doesn't exist
             if page.status_code >= 400:
                 return
@@ -128,7 +131,12 @@ class Crawl:
         :param organization:
         :return:
         """
-        company = requests.get(organization)
+        try:
+            company = requests.get(organization, timeout=5)
+        except:
+            return
+        if company.status_code >= 400:
+            return
         url = company.url
         company = BeautifulSoup(company.text, 'html.parser')
         # Find All script sections containing JSON
@@ -170,14 +178,14 @@ class Crawl:
                                                     index=False)
 
     def crawl(self):
-        for page in range(self.max_page):
+        for page in range(self.current_page, self.max_page):
             self.current_page = page
             self.scrape_results_page()
             print(f'Page: {page} Complete')
 
 
 if __name__ == "__main__":
-    #os.system('rm scraped_data/*.csv')
+    # os.system('rm scraped_data/*.csv')
     c = Crawl('https://www.builtinchicago.org/companies?status=all', 40)
     c.current_page = 28
     c.scrape_results_page()

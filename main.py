@@ -12,3 +12,8 @@ list = [
     'https://www.builtincolorado.com/companies?status=all'
 ]
 
+# Crawl each starting domain
+for dm in list:
+    c = Crawl(dm, 300)
+    c.crawl()
+

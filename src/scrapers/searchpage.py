@@ -119,7 +119,7 @@ class Crawl:
             # Run Data Fetch
             for org in job_links:
                 # To be nice
-                time.sleep(2)
+                time.sleep(3)
                 if 'https://' not in org:
                     org = 'https://' + org
                 if '/built' not in org:

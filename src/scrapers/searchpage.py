@@ -69,7 +69,6 @@ class Crawl:
             params = (
                 ('status', 'all'),
             )
-            # TODO MODIFY
             page = requests.get(self.company_page, headers=headers, params=params)
             soup = BeautifulSoup(page.content, 'html.parser')
             job_hrefs = soup.find_all("div", {"class": "open-jobs"})
@@ -198,6 +197,8 @@ if __name__ == "__main__":
     c = Crawl('https://www.builtinaustin.com/companies?status=all', 300)
     page = requests.get('https://www.builtinaustin.com/companies?status=all')
     links = c.generate_job_links(page.content)
+    c.crawl()
+
     # c.scrape_company_page('https://www.builtinchicago.org/company/marketing-store')
     # df = pd.read_csv('scraped_data/company_info.csv')
     # assert len(df) == 1

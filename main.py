@@ -11,7 +11,4 @@ list = [
     'https://www.builtinboston.com/companies?status=all',
     'https://www.builtincolorado.com/companies?status=all'
 ]
-for area in list:
-    c = Crawl(area, 300)
-    c.current_page = 0
-    c.scrape_results_page()
+

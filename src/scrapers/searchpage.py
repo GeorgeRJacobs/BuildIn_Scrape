@@ -20,6 +20,7 @@ class Crawl:
             self.base_url.netloc.replace('www.', '').replace('.org', '').replace('.com', ''))
         self.save_found = 'scraped_data/company_info_{}.csv'.format(
             self.base_url.netloc.replace('www.', '').replace('.org', '').replace('.com', ''))
+        self.company_page = self.base_url[0] + '://' + self.base_url[1] + self.base_url[2]
 
     def get_pagination_code(self):
         """
@@ -68,7 +69,8 @@ class Crawl:
             params = (
                 ('status', 'all'),
             )
-            page = requests.get('https://www.builtinchicago.org/companies', headers=headers, params=params)
+            # TODO MODIFY
+            page = requests.get(self.company_page, headers=headers, params=params)
             soup = BeautifulSoup(page.content, 'html.parser')
             job_hrefs = soup.find_all("div", {"class": "open-jobs"})
             job_links = []
@@ -103,18 +105,15 @@ class Crawl:
                 ('page', self.current_page),
             )
             try:
-                page = requests.get('https://www.builtinchicago.org/companies', headers=headers, params=params, timeout=5)
+                page = requests.get(self.company_page, headers=headers, params=params,
+                                    timeout=5)
             except:
                 return
             # Check if page doesn't exist
             if page.status_code >= 400:
                 return
-            soup = BeautifulSoup(page.content, 'html.parser')
-            job_hrefs = soup.find_all("div", {"class": "wrap-view-page"})
-            job_links = []
-            for job in job_hrefs:
-                job_links.append(self.base_url.netloc + job.find('a')['href'])
-            job_links = [x.replace('/jobs', '') for x in job_links]
+
+            job_links = self.generate_job_links(page.content)
 
             # Run Data Fetch
             for org in job_links:
@@ -124,6 +123,15 @@ class Crawl:
                     org = 'https://' + org
                 if '/built' not in org:
                     self.scrape_company_page(org)
+
+    def generate_job_links(self, content):
+        soup = BeautifulSoup(content, 'html.parser')
+        job_hrefs = soup.find_all("div", {"class": "wrap-view-page"})
+        job_links = []
+        for job in job_hrefs:
+            job_links.append(self.base_url.netloc + job.find('a')['href'])
+        job_links = [x.replace('/jobs', '') for x in job_links]
+        return job_links
 
     def scrape_company_page(self, organization):
         """
@@ -186,9 +194,10 @@ class Crawl:
 
 if __name__ == "__main__":
     # os.system('rm scraped_data/*.csv')
-    c = Crawl('https://www.builtinchicago.org/companies?status=all', 40)
-    c.current_page = 28
-    c.scrape_results_page()
+
+    c = Crawl('https://www.builtinaustin.com/companies?status=all', 300)
+    page = requests.get('https://www.builtinaustin.com/companies?status=all')
+    links = c.generate_job_links(page.content)
     # c.scrape_company_page('https://www.builtinchicago.org/company/marketing-store')
     # df = pd.read_csv('scraped_data/company_info.csv')
     # assert len(df) == 1

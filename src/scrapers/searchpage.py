@@ -17,9 +17,9 @@ class Crawl:
         self.base_url = urllib.parse.urlparse(search_start_url)
         self.max_page = max_page
         self.save_missed = 'scraped_data/data_not_found_{}.csv'.format(
-            self.base_url.netloc.replace('www.', '').replace('.org', ''))
+            self.base_url.netloc.replace('www.', '').replace('.org', '').replace('.com', ''))
         self.save_found = 'scraped_data/company_info_{}.csv'.format(
-            self.base_url.netloc.replace('www.', '').replace('.org', ''))
+            self.base_url.netloc.replace('www.', '').replace('.org', '').replace('.com', ''))
 
     def get_pagination_code(self):
         """
@@ -119,7 +119,7 @@ class Crawl:
             # Run Data Fetch
             for org in job_links:
                 # To be nice
-                time.sleep(3)
+                time.sleep(2)
                 if 'https://' not in org:
                     org = 'https://' + org
                 if '/built' not in org:

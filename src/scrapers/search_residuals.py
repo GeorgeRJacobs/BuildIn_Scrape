@@ -124,6 +124,7 @@ class CrawlResiduals:
                 val += 1
                 # row variable is a dictionary that represents a row in csv
                 print(f'URL: {val}')
+                time.sleep(2)
                 self.scrape_company_page(row['url'])
 
 

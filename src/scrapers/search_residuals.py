@@ -95,7 +95,6 @@ class CrawlResiduals:
             return
         # Create Dictionary Value
         print(f'Working: {url}')
-        print(data_we_want)
         data = json.loads(data_we_want)
         data = data['@graph']
         data = self.return_found_data(data)
@@ -113,12 +112,15 @@ class CrawlResiduals:
         :return:
         """
         # Read the files
+        val = 0
         with open('round_1_data_not_found.csv', 'r') as read_obj:
             # pass the file object to DictReader() to get the DictReader object
             csv_dict_reader = DictReader(read_obj)
             # iterate over each line as a ordered dictionary
             for row in csv_dict_reader:
+                val += 1
                 # row variable is a dictionary that represents a row in csv
+                print(f'URL: {val}')
                 self.scrape_company_page(row['url'])
 
 

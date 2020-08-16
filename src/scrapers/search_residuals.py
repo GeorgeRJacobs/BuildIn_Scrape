@@ -94,17 +94,20 @@ class CrawlResiduals:
         if data_we_want is None:
             return
         # Create Dictionary Value
-        print(f'Working: {url}')
-        data = json.loads(data_we_want)
-        data = data['@graph']
-        data = self.return_found_data(data)
-        # Write File to CSV
-        # if file does not exist write header
-        dta = pd.DataFrame(data)
-        if not os.path.isfile(self.save_found):
-            dta.to_csv(self.save_found, index=False)
-        else:  # else it exists so append without writing the header
-            dta.to_csv(self.save_found, mode='a', header=False, index=False)
+        try:
+            print(f'Working: {url}')
+            data = json.loads(data_we_want)
+            data = data['@graph']
+            data = self.return_found_data(data)
+            # Write File to CSV
+            # if file does not exist write header
+            dta = pd.DataFrame(data)
+            if not os.path.isfile(self.save_found):
+                dta.to_csv(self.save_found, index=False)
+            else:  # else it exists so append without writing the header
+                dta.to_csv(self.save_found, mode='a', header=False, index=False)
+        except:
+            print(f'Error: {url}')
 
     def crawl(self):
         """

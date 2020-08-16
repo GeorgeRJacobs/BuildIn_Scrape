@@ -122,9 +122,6 @@ class CrawlResiduals:
                 self.scrape_company_page(row['url'])
 
 
-
-
-
 if __name__ == "__main__":
     # os.system('rm scraped_data_round_1/*.csv')
 

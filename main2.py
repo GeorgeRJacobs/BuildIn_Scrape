@@ -4,5 +4,6 @@
 from src.scrapers.search_residuals import CrawlResiduals
 
 # Crawl
-CrawlResiduals.crawl()
+c = CrawlResiduals()
+c.crawl()
 

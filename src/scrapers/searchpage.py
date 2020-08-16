@@ -16,9 +16,9 @@ class Crawl:
         self.current_page = 0
         self.base_url = urllib.parse.urlparse(search_start_url)
         self.max_page = max_page
-        self.save_missed = 'scraped_data/data_not_found_{}.csv'.format(
+        self.save_missed = 'scraped_data_round_1/data_not_found_{}.csv'.format(
             self.base_url.netloc.replace('www.', '').replace('.org', '').replace('.com', ''))
-        self.save_found = 'scraped_data/company_info_{}.csv'.format(
+        self.save_found = 'scraped_data_round_1/company_info_{}.csv'.format(
             self.base_url.netloc.replace('www.', '').replace('.org', '').replace('.com', ''))
         self.company_page = self.base_url[0] + '://' + self.base_url[1] + self.base_url[2]
 
@@ -161,7 +161,7 @@ class Crawl:
             data = json.loads(data_we_want)
             data = data['@graph']
             data = {
-                'Company': [data[0]['name']],
+                'Company': [data[0].get('name', '')],
                 'Number of Employees': [data[0]['numberOfEmployees']['name']],
                 'Company URL': [data[0]['url']],
                 'BuiltIn URL': url,
@@ -192,7 +192,7 @@ class Crawl:
 
 
 if __name__ == "__main__":
-    # os.system('rm scraped_data/*.csv')
+    # os.system('rm scraped_data_round_1/*.csv')
 
     c = Crawl('https://www.builtinaustin.com/companies?status=all', 300)
     page = requests.get('https://www.builtinaustin.com/companies?status=all')
@@ -200,7 +200,7 @@ if __name__ == "__main__":
     c.crawl()
 
     # c.scrape_company_page('https://www.builtinchicago.org/company/marketing-store')
-    # df = pd.read_csv('scraped_data/company_info.csv')
+    # df = pd.read_csv('scraped_data_round_1/company_info.csv')
     # assert len(df) == 1
     # search = requests.get('https://www.builtinchicago.org/companies?status=all&page=14')
     # # Parse

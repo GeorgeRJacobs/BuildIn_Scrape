@@ -32,5 +32,5 @@ toml==0.10.1
 tqdm==4.48.2
 urllib3==1.25.10
 w3lib==1.22.0
-websockets==8.1
+websockets==9.1
 zipp==3.1.0
